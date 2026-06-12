@@ -44,7 +44,6 @@ This is a fast, performance and design-oriented static site using purely HTML an
 
 - `index.html`: The main structure and design of the landing page.
 - `src/style.css`: All styling, modern typography, and animations (Glassmorphism, Blob Animations).
-- `.github/workflows/deploy.yml`: The CI/CD pipeline that automatically deploys the website to GitHub Pages on every push to the `main` branch.
 
 ## 🤝 Contributing
 
