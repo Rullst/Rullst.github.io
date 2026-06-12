@@ -123,3 +123,28 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(terminal);
   }
 });
+
+// Cookie Consent Logic
+document.addEventListener('DOMContentLoaded', () => {
+  const cookieBanner = document.getElementById('cookie-banner');
+  const btnAccept = document.getElementById('cookie-accept');
+  const btnDecline = document.getElementById('cookie-decline');
+
+  if (cookieBanner && btnAccept && btnDecline) {
+    const consent = localStorage.getItem('cookie_consent');
+    if (!consent) {
+      // Show banner if no consent is found
+      cookieBanner.classList.remove('hidden');
+    }
+
+    btnAccept.addEventListener('click', () => {
+      localStorage.setItem('cookie_consent', 'accepted');
+      cookieBanner.classList.add('hidden');
+    });
+
+    btnDecline.addEventListener('click', () => {
+      localStorage.setItem('cookie_consent', 'declined');
+      cookieBanner.classList.add('hidden');
+    });
+  }
+});
