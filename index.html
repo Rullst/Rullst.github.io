@@ -2,23 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/Rullst/Rullst/main/Rullst.png" />
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/venelouis/Rullst/main/Rullst.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rullst - Rust Fullstack Web Framework</title>
-    <!-- OpenGraph Metadata -->
-    <meta property="og:title" content="Rullst - Rust Fullstack Web Framework" />
-    <meta property="og:description" content="The developer-first full-stack web framework designed obsessively for emotional productivity." />
-    <meta property="og:image" content="https://raw.githubusercontent.com/Rullst/Rullst/main/Rullst.png" />
-    <meta property="og:url" content="https://github.com/Rullst/Rullst" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Rullst - Rust Fullstack Web Framework" />
-    <meta name="twitter:description" content="The developer-first full-stack web framework designed obsessively for emotional productivity." />
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/Rullst/Rullst/main/Rullst.png" />
-    <!-- Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/style.css">
   </head>
   <body>
     <div class="blob blob-1"></div>
@@ -30,21 +20,9 @@
           <span>📜🦀🌐 Rullst</span>
         </div>
         <div class="nav-links">
-          <a href="#features">Features</a>
-          <a href="#cli-demo">CLI</a>
-          <a href="#benchmarks">Benchmarks</a>
-          <a href="https://www.youtube.com/@Rullst_Official" target="_blank" title="YouTube" style="display: flex; align-items: center;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
-          </a>
-          <a href="https://x.com/venelouis" target="_blank" title="X (Twitter)" style="display: flex; align-items: center;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
-          </a>
-          <a href="https://discord.gg/2ntKFtsSjw" target="_blank" title="Discord" style="display: flex; align-items: center;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.16 6.33h0a15.22 15.22 0 0 0-3.8-1.51l-.22.42a13.3 13.3 0 0 0-4.28 0l-.22-.42a15.22 15.22 0 0 0-3.8 1.51C2.53 11 1.7 15.54 2 19.34h0A15.35 15.35 0 0 0 6.64 22l.8-1.07a10.87 10.87 0 0 1-1.68-.82l.33-.25c3.08 1.61 6.55 1.61 9.63 0l.33.25a10.87 10.87 0 0 1-1.68.82l.8 1.07a15.35 15.35 0 0 0 4.64-2.66c.3-3.8-.53-8.34-3.65-13.01ZM8.5 15.4c-1.1 0-2-.99-2-2.2 0-1.21.89-2.2 2-2.2 1.1 0 2 .99 2 2.2 0 1.21-.9 2.2-2 2.2Zm7 0c-1.1 0-2-.99-2-2.2 0-1.21.89-2.2 2-2.2 1.1 0 2 .99 2 2.2 0 1.21-.9 2.2-2 2.2Z"/></svg>
-          </a>
-          <a href="https://github.com/Rullst/Rullst" target="_blank" title="GitHub" style="display: flex; align-items: center;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-          </a>
+          <a href="https://github.com/venelouis/Rullst" target="_blank" class="btn btn-outline">⭐ GitHub</a>
+          <a href="https://discord.gg/2ntKFtsSjw" target="_blank" class="nav-discord">💬 Discord</a>
+          <a href="#" target="_blank" class="nav-discord" style="background: transparent; padding: 0;">📺 YouTube</a>
         </div>
       </div>
     </nav>
@@ -105,17 +83,35 @@
           </div>
           <span class="filename">bash</span>
         </div>
-        <div class="terminal-body" id="terminal-body">
-          <!-- JS Animation goes here -->
+        <div class="terminal-body" style="padding: 1.5rem; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; line-height: 1.6; color: #f8fafc; overflow-x: auto;">
+<pre style="margin: 0; color: #fef08a; font-weight: bold; line-height: 1.2; text-shadow: 2px 2px 0 #a16207;">
+██████╗ ██╗   ██╗██╗     ██╗     ███████╗████████╗
+██╔══██╗██║   ██║██║     ██║     ██╔════╝╚══██╔══╝
+██████╔╝██║   ██║██║     ██║     ███████╗   ██║   
+██╔══██╗██║   ██║██║     ██║     ╚════██║   ██║   
+██║  ██║╚██████╔╝███████╗███████╗███████║   ██║   
+╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚══════╝   ╚═╝   
+</pre>
+          <div style="margin-top: 1.5rem;">
+            The <span style="color: #06b6d4;">Ultimate Full-Stack Rust Framework</span> <span style="color: #fef08a;">v2.0.9</span><br>
+            ⚡ <span style="color: #d946ef;">Security</span> · <span style="color: #d946ef;">Speed</span> · <span style="color: #d946ef;">Developer Experience</span> ⚡<br><br>
+            <span style="color: #fef08a; font-weight: bold;">?</span> Navigate with ↑↓, confirm with Enter<br>
+            <span style="color: #64748b; font-weight: bold;">&gt;</span><br>
+            <span style="color: #22c55e; font-weight: bold;">&gt; ✨ <span style="color: #38bdf8;">Create New Project</span></span>        <span style="color: #64748b;">(API, Fullstack or Dockerized)</span><br>
+            &nbsp;&nbsp;📁 Already have a project? <span style="color: #64748b;">(Dev, Scaffold, DB, Auth, Deploy...)</span><br>
+            &nbsp;&nbsp;💡 View Help & Commands    <span style="color: #64748b;">(Framework Reference)</span><br>
+            &nbsp;&nbsp;❌ <span style="color: #94a3b8;">Exit</span>                    <span style="color: #64748b;">(Close interactive menu)</span>
+          </div>
         </div>
       </div>
     </section>
 
     <section id="benchmarks" class="benchmarks" style="padding: 6rem 1rem;">
       <h2 class="section-title">Crush the Competition</h2>
-      <p class="section-subtitle" style="text-align: center; color: #94a3b8; margin-bottom: 3rem; max-width: 700px; margin-inline: auto;">By combining Rust's memory safety, Tokio's async I/O, and Axum's routing, Rullst delivers unparalleled performance without sacrificing developer experience.</p>
+      <p class="section-subtitle" style="text-align: center; color: #94a3b8; margin-bottom: 3rem; max-width: 700px; margin-inline: auto;">By combining Rust's memory safety, Tokio's async I/O, and Axum's routing, Rullst delivers unparalleled performance across the board.</p>
       
       <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+        
         <div class="feature-card glass">
           <h3>Requests per Second</h3>
           <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem;">Higher is better (Hello World endpoint)</p>
@@ -170,6 +166,20 @@
               </div>
             </div>
             <div class="bar-row">
+              <span class="bar-label">Fiber (Go)</span>
+              <div class="bar-wrapper">
+                <div class="bar-track"><div class="bar-fill" style="width: 5%; background: #00add8;"></div></div>
+                <span class="bar-text">22 MB</span>
+              </div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Gin (Go)</span>
+              <div class="bar-wrapper">
+                <div class="bar-track"><div class="bar-fill" style="width: 6%; background: #00add8;"></div></div>
+                <span class="bar-text">24 MB</span>
+              </div>
+            </div>
+            <div class="bar-row">
               <span class="bar-label">Laravel (PHP)</span>
               <div class="bar-wrapper">
                 <div class="bar-track"><div class="bar-fill" style="width: 24%; background: #f97316;"></div></div>
@@ -191,15 +201,68 @@
               </div>
             </div>
             <div class="bar-row">
-              <span class="bar-label">Spring Boot (Java)</span>
+              <span class="bar-label">Spring (Java)</span>
               <div class="bar-wrapper">
-                <div class="bar-track"><div class="bar-fill" style="width: 100%; background: #0ea5e9;"></div></div>
+                <div class="bar-track"><div class="bar-fill" style="width: 100%; background: #f97316;"></div></div>
                 <span class="bar-text">450 MB</span>
               </div>
             </div>
           </div>
         </div>
       </div>
+      
+      <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1000px; margin: 2rem auto 0 auto;">
+        <div class="feature-card glass">
+          <h3>SSR Engine Speed</h3>
+          <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem;">Lower is better (Microseconds per render)</p>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <span class="bar-label">Rullst (html!)</span>
+              <div class="bar-wrapper">
+                <div class="bar-track"><div class="bar-fill" style="width: 12%; background: var(--gradient-primary);"></div></div>
+                <span class="bar-text">1.07 µs</span>
+              </div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Tera Template</span>
+              <div class="bar-wrapper">
+                <div class="bar-track"><div class="bar-fill" style="width: 24%; background: #f97316;"></div></div>
+                <span class="bar-text">2.14 µs</span>
+              </div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Leptos (View)</span>
+              <div class="bar-wrapper">
+                <div class="bar-track"><div class="bar-fill" style="width: 100%; background: #eab308;"></div></div>
+                <span class="bar-text">9.10 µs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="feature-card glass">
+          <h3>Routing Overhead</h3>
+          <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1.5rem;">Lower is better (Microseconds / req)</p>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <span class="bar-label">Rullst Router</span>
+              <div class="bar-wrapper">
+                <div class="bar-track"><div class="bar-fill" style="width: 96%; background: var(--gradient-primary);"></div></div>
+                <span class="bar-text">1.53 µs</span>
+              </div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Axum Router</span>
+              <div class="bar-wrapper">
+                <div class="bar-track"><div class="bar-fill" style="width: 100%; background: #10b981;"></div></div>
+                <span class="bar-text">1.59 µs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="docs" class="docs-section" style="padding: 6rem 1rem; max-width: 1000px; margin: 0 auto;">
       <h2 class="section-title">Documentation</h2>
       <p class="section-subtitle" style="text-align: center; color: #94a3b8; margin-bottom: 3rem;">Getting started is simple. See the basics below or visit our GitHub for the full guide.</p>
@@ -240,40 +303,62 @@ pub struct User {
     </section>
 
     <footer class="footer">
-      <p>Built with ❤️ by the Rullst Community. <a href="privacy.html" class="text-emerald" style="margin-left: 0.5rem; text-decoration: underline;">Privacy Policy</a></p>
-      <div style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 1rem;">
-        <a href="https://discord.gg/2ntKFtsSjw" target="_blank" class="text-emerald" title="Discord" style="display: flex; align-items: center;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.16 6.33h0a15.22 15.22 0 0 0-3.8-1.51l-.22.42a13.3 13.3 0 0 0-4.28 0l-.22-.42a15.22 15.22 0 0 0-3.8 1.51C2.53 11 1.7 15.54 2 19.34h0A15.35 15.35 0 0 0 6.64 22l.8-1.07a10.87 10.87 0 0 1-1.68-.82l.33-.25c3.08 1.61 6.55 1.61 9.63 0l.33.25a10.87 10.87 0 0 1-1.68.82l.8 1.07a15.35 15.35 0 0 0 4.64-2.66c.3-3.8-.53-8.34-3.65-13.01ZM8.5 15.4c-1.1 0-2-.99-2-2.2 0-1.21.89-2.2 2-2.2 1.1 0 2 .99 2 2.2 0 1.21-.9 2.2-2 2.2Zm7 0c-1.1 0-2-.99-2-2.2 0-1.21.89-2.2 2-2.2 1.1 0 2 .99 2 2.2 0 1.21-.9 2.2-2 2.2Z"/></svg>
-        </a>
-        <a href="https://www.youtube.com/@Rullst_Official" target="_blank" class="text-emerald" title="YouTube" style="display: flex; align-items: center;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
-        </a>
-        <a href="https://x.com/venelouis" target="_blank" class="text-emerald" title="X (Twitter)" style="display: flex; align-items: center;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
-        </a>
-        <a href="https://github.com/Rullst/Rullst" target="_blank" class="text-emerald" title="GitHub" style="display: flex; align-items: center;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
-        </a>
-        <a href="https://dev.to/venelouis" target="_blank" class="text-emerald" title="Dev.to" style="display: flex; align-items: center;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7.42 10.05c-.18-.16-.46-.23-.84-.23H6l.02 2.44.04 2.45.56-.02c.41 0 .63-.07.83-.26.24-.24.26-.36.26-2.2 0-1.91-.02-1.96-.29-2.18zM0 4.94v14.12h24V4.94H0zM8.56 15.3c-.44.58-1.06.77-2.53.77H4.71V8.53h1.4c1.67 0 2.16.18 2.6.9.27.43.29.6.32 2.57.05 2.23-.02 2.73-.47 3.3zm5.09-5.47h-2.47v1.77h1.52v1.28l-1.52.02v1.7h2.55v1.28H8.16V8.53H13.6v1.3zm6.47 3.15c-.44 1.4-1.53 2.11-3.03 1.94-.71-.09-1.3-.43-1.67-.98-.22-.32-.24-.46-.22-2.31l.02-1.92h1.64l-.02 1.55c-.02 1.44.02 1.63.26 1.87.26.24.49.27.87.16.32-.1.52-.39.52-.77V8.53h1.66v4.45c0 1.25-.02 1.35-.03 1.4z"/></svg>
-        </a>
-        <a href="https://rullst.hashnode.dev/" target="_blank" class="text-emerald" title="Hashnode" style="display: flex; align-items: center;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M22.351 8.019l-6.37-6.37a5.23 5.23 0 00-7.402 0l-6.37 6.37a5.23 5.23 0 000 7.402l6.37 6.37a5.23 5.23 0 007.402 0l6.37-6.37a5.23 5.23 0 000-7.402zM12 15.953a3.953 3.953 0 110-7.906 3.953 3.953 0 010 7.906z"/></svg>
-        </a>
+      <p>Built with ❤️ by the Rullst Community.</p>
+      <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://discord.gg/2ntKFtsSjw" target="_blank" class="text-emerald">💬 Join the Discord</a>
+        <a href="https://github.com/venelouis/Rullst" target="_blank" style="color: #94a3b8; text-decoration: none;">⭐ GitHub Repo</a>
+        <a href="#" target="_blank" style="color: #94a3b8; text-decoration: none;">🐦 Twitter/X</a>
+        <a href="#" target="_blank" style="color: #94a3b8; text-decoration: none;">📺 YouTube</a>
+        <a href="#" target="_blank" style="color: #94a3b8; text-decoration: none;">📝 Dev.to</a>
+        <a href="#" target="_blank" style="color: #94a3b8; text-decoration: none;">📓 Hashnode</a>
+        <a href="https://www.tiktok.com/@venelouis" target="_blank" style="color: #94a3b8; text-decoration: none;">🎵 TikTok</a>
       </div>
+      <p style="font-size: 0.8rem; color: #64748b; margin-top: 1.5rem;"><a href="/privacy" style="color: #64748b; text-decoration: underline;">Aviso de Privacidade</a></p>
     </footer>
 
-    <script type="module" src="/src/main.ts"></script>
-
-    <!-- Cookie Consent Banner -->
-    <div id="cookie-banner" class="cookie-banner hidden glass">
-      <div class="cookie-content">
-        <p style="font-size: 0.9rem; color: #f8fafc; margin-bottom: 1rem;">We use cookies and similar technologies to ensure you get the best experience on our website, in compliance with GDPR, LGPD, and global privacy standards. <a href="privacy.html" class="text-emerald">Learn more</a>.</p>
-        <div class="cookie-actions">
-          <button id="cookie-accept" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Accept All</button>
-          <button id="cookie-decline" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Decline</button>
-        </div>
+    <!-- Cookie Consent Modal -->
+    <div id="cookie-banner" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); opacity: 0; width: 90%; max-width: 400px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem; z-index: 1000; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); pointer-events: none;">
+      <div style="text-align: center;">
+        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🍪</div>
+        <h3 style="margin-top: 0; margin-bottom: 0.5rem; font-size: 1.25rem; color: #f8fafc;">Privacy & Cookies</h3>
+        <p style="color: #cbd5e1; font-size: 0.95rem; margin: 0; line-height: 1.5;">
+          We use cookies and similar technologies to ensure you get the best experience on our platform. By continuing to browse, you agree to our <a href="/privacy" style="color: #38bdf8; text-decoration: underline; font-weight: 500;">Privacy Policy</a>.
+        </p>
+      </div>
+      <div style="display: flex; gap: 1rem; justify-content: center; width: 100%;">
+        <button id="decline-cookies" class="btn btn-outline" style="flex: 1; padding: 0.6rem; font-size: 0.9rem; cursor: pointer; text-align: center; justify-content: center;">Decline</button>
+        <button id="accept-cookies" class="btn btn-primary" style="flex: 1; padding: 0.6rem; font-size: 0.9rem; cursor: pointer; text-align: center; justify-content: center;">Accept All</button>
       </div>
     </div>
+
+    <script>
+      // We removed main.js because the terminal is now an awesome static ASCII art display.
+
+      // Privacy Consent Banner Logic
+      document.addEventListener("DOMContentLoaded", function() {
+        const banner = document.getElementById('cookie-banner');
+        const acceptBtn = document.getElementById('accept-cookies');
+        const declineBtn = document.getElementById('decline-cookies');
+        
+        if (!localStorage.getItem('rullst_privacy_accepted')) {
+          // Fade in and scale up the modal after a short delay
+          setTimeout(() => {
+            banner.style.opacity = '1';
+            banner.style.transform = 'translate(-50%, -50%) scale(1)';
+            banner.style.pointerEvents = 'auto';
+          }, 800);
+        }
+
+        const closeBanner = (accepted) => {
+          localStorage.setItem('rullst_privacy_accepted', accepted ? 'true' : 'false');
+          banner.style.opacity = '0';
+          banner.style.transform = 'translate(-50%, -50%) scale(0.95)';
+          banner.style.pointerEvents = 'none';
+        };
+
+        acceptBtn.addEventListener('click', () => closeBanner(true));
+        declineBtn.addEventListener('click', () => closeBanner(false));
+      });
+    </script>
   </body>
 </html>

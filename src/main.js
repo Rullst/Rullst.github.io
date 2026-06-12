@@ -1,6 +1,6 @@
 import './style.css'
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function runTerminalAnimation() {
   const terminal = document.getElementById('terminal-body');
@@ -9,7 +9,7 @@ async function runTerminalAnimation() {
   const steps = [
     { type: 'input', text: 'cargo rullst new my_startup' },
     { type: 'empty', delay: 200 },
-    { type: 'output', text: '📜🦀🌐 Rullst Framework v2.0.5', color: '#10b981', delay: 200 },
+    { type: 'output', text: '📜🦀🌐 Rullst Framework v2.0.9', color: '#10b981', delay: 200 },
     { type: 'output', text: 'The emotional productivity framework for Rust.', delay: 200 },
     { type: 'empty', delay: 200 },
     { type: 'menu', text: '? Select Database:', delay: 400 },
@@ -39,14 +39,14 @@ async function runTerminalAnimation() {
     line.innerHTML = `<span class="term-prompt">~</span> <span class="term-cmd"></span><span class="term-cursor"></span>`;
     terminal.appendChild(line);
 
-    const cmdSpan = line.querySelector('.term-cmd') as HTMLSpanElement;
-    const cursorSpan = line.querySelector('.term-cursor') as HTMLSpanElement;
+    const cmdSpan = line.querySelector('.term-cmd');
+    const cursorSpan = line.querySelector('.term-cursor');
 
     for (const step of steps) {
       if (step.type === 'input') {
         await sleep(500);
-        for (let i = 0; i < step.text!.length; i++) {
-          cmdSpan.textContent += step.text![i];
+        for (let i = 0; i < step.text.length; i++) {
+          cmdSpan.textContent += step.text[i];
           await sleep(Math.random() * 50 + 50); // random typing speed
         }
         await sleep(400); // Wait before "pressing enter"
@@ -70,7 +70,7 @@ async function runTerminalAnimation() {
           outLine.style.color = step.color;
         }
 
-        outLine.textContent = step.text!;
+        outLine.textContent = step.text;
         terminal.appendChild(outLine);
         await sleep(step.delay || 0);
       }
@@ -96,7 +96,7 @@ async function runTerminalAnimation() {
 
 // Copy to clipboard functionality
 document.getElementById('copy-install')?.addEventListener('click', (e) => {
-  const btn = e.target as HTMLButtonElement;
+  const btn = e.target;
   navigator.clipboard.writeText('cargo install cargo-rullst');
   const originalText = btn.textContent;
   btn.textContent = 'Copied! 🎉';
@@ -121,30 +121,5 @@ document.addEventListener('DOMContentLoaded', () => {
   const terminal = document.getElementById('terminal-body');
   if (terminal) {
     observer.observe(terminal);
-  }
-});
-
-// Cookie Consent Logic
-document.addEventListener('DOMContentLoaded', () => {
-  const cookieBanner = document.getElementById('cookie-banner');
-  const btnAccept = document.getElementById('cookie-accept');
-  const btnDecline = document.getElementById('cookie-decline');
-
-  if (cookieBanner && btnAccept && btnDecline) {
-    const consent = localStorage.getItem('cookie_consent');
-    if (!consent) {
-      // Show banner if no consent is found
-      cookieBanner.classList.remove('hidden');
-    }
-
-    btnAccept.addEventListener('click', () => {
-      localStorage.setItem('cookie_consent', 'accepted');
-      cookieBanner.classList.add('hidden');
-    });
-
-    btnDecline.addEventListener('click', () => {
-      localStorage.setItem('cookie_consent', 'declined');
-      cookieBanner.classList.add('hidden');
-    });
   }
 });
