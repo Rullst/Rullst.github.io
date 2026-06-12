@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 
 export default defineConfig({
-  base: '/Rullst/',
+  base: '/',
   build: {
     rollupOptions: {
       input: {
