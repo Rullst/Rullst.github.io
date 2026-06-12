@@ -25,6 +25,7 @@
       </div>
       <div class="nav-links">
         <a href="https://github.com/venelouis/Rullst" target="_blank" class="btn btn-outline">⭐ GitHub</a>
+        <a href="#architecture" class="btn btn-outline" style="border-color: rgba(56, 189, 248, 0.3); color: #38bdf8; background: rgba(56, 189, 248, 0.05);">🧠 Architecture</a>
         <a href="https://discord.gg/2ntKFtsSjw" target="_blank" class="nav-discord">💬 Discord</a>
         <a href="#" target="_blank" class="nav-discord" style="background: transparent; padding: 0;">📺 YouTube</a>
       </div>
@@ -49,35 +50,7 @@
     </div>
   </header>
 
-  <section id="features" class="features">
-    <h2 class="section-title">The AI-Native Advantage</h2>
-    <div class="features-grid">
-      <div class="feature-card glass">
-        <div class="feature-icon">🤖</div>
-        <h3>AI-Native by Design</h3>
-        <p>Built from the ground up for AI coders. Zero runtime magic, pure compilation, and automatic `.ai-rules`
-          context injection makes Rullst perfectly legible to Cursor and Copilot without hallucinations.</p>
-      </div>
-      <div class="feature-card glass">
-        <div class="feature-icon">🔄</div>
-        <h3>Autonomous Upgrades</h3>
-        <p>Never fear breaking changes again. <code>cargo rullst upgrade</code> performs AST-based codemods in the
-          background to automatically update your syntax when the framework evolves.</p>
-      </div>
-      <div class="feature-card glass">
-        <div class="feature-icon">🌍</div>
-        <h3>Edge Fusion & Replication</h3>
-        <p>Compile to WebAssembly for Cloudflare Workers globally, backed by built-in Turso/libsql replication for 1ms
-          database read latency worldwide.</p>
-      </div>
-      <div class="feature-card glass">
-        <div class="feature-icon">📱</div>
-        <h3>Omni-Frontend Wasm</h3>
-        <p>Write frontend interactive components strictly in Rust (`#[client_component]`). They compile to lightweight
-          Wasm, eliminating the need to write JavaScript for SPAs or Desktop apps.</p>
-      </div>
-    </div>
-  </section>
+
 
   <section id="cli-demo" class="cli-demo-section">
     <h2 class="section-title">The Interactive Experience</h2>
@@ -198,24 +171,7 @@
               <span class="bar-text">18 MB</span>
             </div>
           </div>
-          <div class="bar-row">
-            <span class="bar-label">Fiber (Go)</span>
-            <div class="bar-wrapper">
-              <div class="bar-track">
-                <div class="bar-fill" style="width: 5%; background: #00add8;"></div>
-              </div>
-              <span class="bar-text">22 MB</span>
-            </div>
-          </div>
-          <div class="bar-row">
-            <span class="bar-label">Gin (Go)</span>
-            <div class="bar-wrapper">
-              <div class="bar-track">
-                <div class="bar-fill" style="width: 6%; background: #00add8;"></div>
-              </div>
-              <span class="bar-text">24 MB</span>
-            </div>
-          </div>
+
           <div class="bar-row">
             <span class="bar-label">Laravel (PHP)</span>
             <div class="bar-wrapper">
@@ -343,6 +299,89 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div style="max-width: 1000px; margin: 3rem auto 0 auto; padding: 2rem; background: rgba(15, 23, 42, 0.4); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05);">
+      <h3 style="color: #38bdf8; margin-bottom: 1rem; font-size: 1.2rem;">Understanding the Numbers</h3>
+      <p style="color: #cbd5e1; line-height: 1.6; margin-bottom: 1.5rem; font-size: 0.95rem;">
+        Here are the numbers of Rullst vs Competitors in average execution time per operation measured by criterion (optimized version):
+      </p>
+      
+      <div style="display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+        <div>
+          <h4 style="color: #f8fafc; margin-bottom: 0.5rem; font-size: 1rem;">1. SSR Rendering (Dynamic Rendering with Loops)</h4>
+          <ul style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; padding-left: 1.2rem;">
+            <li><strong style="color: #e2e8f0;">Rullst (macro html!):</strong> ~1.07 µs (microseconds)</li>
+            <li><strong style="color: #e2e8f0;">Tera Template Engine (e.g. used by Loco):</strong> ~2.14 µs (2x slower than Rullst)</li>
+            <li><strong style="color: #e2e8f0;">Dioxus (Virtual DOM to String):</strong> ~4.54 µs (4.2x slower than Rullst)</li>
+            <li><strong style="color: #e2e8f0;">Leptos (View macro to String):</strong> ~9.10 µs (8.5x slower than Rullst)</li>
+          </ul>
+          <p style="color: #38bdf8; font-size: 0.95rem; font-style: italic;">
+            Rullst crushes them all here thanks to macro expansion done 100% at compile time.
+          </p>
+        </div>
+        <div>
+          <h4 style="color: #f8fafc; margin-bottom: 0.5rem; font-size: 1rem;">2. In-Memory Routing and Handlers</h4>
+          <ul style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; padding-left: 1.2rem;">
+            <li><strong style="color: #e2e8f0;">Axum Router (Plain Text):</strong> ~946 ns (nanoseconds)</li>
+            <li><strong style="color: #e2e8f0;">Rullst Router (Plain Text):</strong> ~974 ns (Practically a tie, margin of error or microscopic overhead of Rullst's zero-cost encapsulation)</li>
+            <li><strong style="color: #e2e8f0;">Rullst Router (JSON):</strong> ~1.53 µs</li>
+            <li><strong style="color: #e2e8f0;">Axum Router (JSON):</strong> ~1.59 µs</li>
+          </ul>
+          <p style="color: #38bdf8; font-size: 0.95rem; font-style: italic;">
+            Rullst remained identical to raw Axum! Showing that the framework's macros deliver a Rails/Loco syntax while keeping Zero Cost on the Base architecture.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture" style="padding: 6rem 1rem; max-width: 1000px; margin: 0 auto;">
+    <h2 class="section-title">Why Rullst? Key Architectural Benefits</h2>
+    <p class="section-subtitle" style="text-align: center; color: #94a3b8; margin-bottom: 3rem;">
+      While Rullst competes closely in performance with bare-metal Rust frameworks like Axum and Actix-web, it stands out due to its unique architectural choices designed for modern software development and AI collaboration:
+    </p>
+
+    <div style="display: grid; gap: 1.5rem; grid-template-columns: 1fr;">
+      <div class="glass" style="padding: 2rem; border-radius: 16px;">
+        <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.25rem;">🤖 AI-Native & Code-Reasoning Optimization</h3>
+        <p style="color: #cbd5e1; line-height: 1.6; font-size: 0.95rem;">Rullst is architected to be highly readable and predictable. By avoiding runtime magic, implicit reflection, or dynamic dependency injection, AI coding assistants (like Gemini/Claude) and developers can easily parse, trace, and modify the application without fear of runtime bugs.</p>
+      </div>
+
+      <div class="glass" style="padding: 2rem; border-radius: 16px;">
+        <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.25rem;">🛡️ Compile-Time Guarantees</h3>
+        <p style="color: #cbd5e1; line-height: 1.6; font-size: 0.95rem;">Rullst prioritizes catching structural bugs, route definition issues, and middleware mismatches at compile time rather than relying on runtime failures or comprehensive test suites.</p>
+      </div>
+
+      <div class="glass" style="padding: 2rem; border-radius: 16px;">
+        <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.25rem;">🔒 Strict Type Safety (No Dynamic Traits)</h3>
+        <p style="color: #cbd5e1; line-height: 1.6; font-size: 0.95rem;">Rullst avoids heavy usage of <code>dyn Trait</code> in favor of static dispatch and strong typing. This leads to better compiler optimizations (monomorphization), smaller binaries, and robust memory/concurrency safety guarantees.</p>
+      </div>
+
+      <div class="glass" style="padding: 2rem; border-radius: 16px;">
+        <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.25rem;">🗺️ Explicit API Design</h3>
+        <p style="color: #cbd5e1; line-height: 1.6; font-size: 0.95rem;">There is no hidden state or magical middleware sequencing. Everything (routes, shared state, filters, extensions) is explicitly declared and wired, preventing side effects and making codebase maintainability simple.</p>
+      </div>
+
+      <div class="glass" style="padding: 2rem; border-radius: 16px;">
+        <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.25rem;">⚖️ Balanced DX & Performance</h3>
+        <p style="color: #cbd5e1; line-height: 1.6; font-size: 0.95rem;">Rullst delivers high throughput and low latencies comparable to microframeworks like Axum, but provides a structured scaffold reminiscent of full-stack frameworks (like Loco or NestJS) without sacrificing performance.</p>
+      </div>
+
+      <div class="glass" style="padding: 2rem; border-radius: 16px;">
+        <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.25rem;">🔄 Autonomous Upgrades</h3>
+        <p style="color: #cbd5e1; line-height: 1.6; font-size: 0.95rem;">Never fear breaking changes again. <code>cargo rullst upgrade</code> performs AST-based codemods in the background to automatically update your syntax when the framework evolves.</p>
+      </div>
+
+      <div class="glass" style="padding: 2rem; border-radius: 16px;">
+        <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.25rem;">🌍 Edge Fusion & Replication</h3>
+        <p style="color: #cbd5e1; line-height: 1.6; font-size: 0.95rem;">Compile to WebAssembly for Cloudflare Workers globally, backed by built-in Turso/libsql replication for 1ms database read latency worldwide.</p>
+      </div>
+
+      <div class="glass" style="padding: 2rem; border-radius: 16px;">
+        <h3 style="color: #38bdf8; margin-bottom: 0.5rem; font-size: 1.25rem;">📱 Omni-Frontend Wasm</h3>
+        <p style="color: #cbd5e1; line-height: 1.6; font-size: 0.95rem;">Write frontend interactive components strictly in Rust (<code>#[client_component]</code>). They compile to lightweight Wasm, eliminating the need to write JavaScript for SPAs or Desktop apps.</p>
       </div>
     </div>
   </section>
