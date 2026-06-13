@@ -5,6 +5,19 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/venelouis/Rullst/main/Rullst.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Open Graph / Thumbnail Meta Tags -->
+  <meta property="og:title" content="Rullst - Rust Fullstack Web Framework" />
+  <meta property="og:description" content="The developer-first full-stack web framework designed obsessively for emotional productivity. Ditch the boilerplate and ship your startup today." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/venelouis/Rullst/main/Rullst.png" />
+  <meta property="og:type" content="website" />
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Rullst - Rust Fullstack Web Framework" />
+  <meta name="twitter:description" content="The developer-first full-stack web framework designed obsessively for emotional productivity. Ditch the boilerplate and ship your startup today." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/venelouis/Rullst/main/Rullst.png" />
+  
   <title>Rullst - Rust Fullstack Web Framework</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,11 +36,17 @@
       <div class="logo">
         <span>📜🦀🌐 Rullst</span>
       </div>
-      <div class="nav-links">
+      <div class="hamburger" id="hamburger">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <div class="nav-links" id="nav-links">
         <a href="https://github.com/venelouis/Rullst" target="_blank" class="btn btn-outline">⭐ GitHub</a>
+        <a href="#benchmarks" class="btn btn-outline" style="border-color: rgba(16, 185, 129, 0.3); color: #10b981; background: rgba(16, 185, 129, 0.05);">📊 Benchmarks</a>
         <a href="#architecture" class="btn btn-outline" style="border-color: rgba(56, 189, 248, 0.3); color: #38bdf8; background: rgba(56, 189, 248, 0.05);">🧠 Architecture</a>
         <a href="https://discord.gg/2ntKFtsSjw" target="_blank" class="nav-discord">💬 Discord</a>
-        <a href="https://youtube.com/@Rullst_Official" target="_blank" class="nav-discord" style="background: transparent; padding: 0;">📺 YouTube</a>
+        <a href="https://youtube.com/@Rullst_Official" target="_blank" class="nav-discord" style="background: transparent;">📺 YouTube</a>
       </div>
     </div>
   </nav>
@@ -469,6 +488,26 @@ pub struct User {
 
   <script>
     // We removed main.js because the terminal is now an awesome static ASCII art display.
+
+    // Mobile Navbar Logic
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    const navItems = document.querySelectorAll('.nav-links a');
+
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+      });
+
+      // Close menu when a link is clicked
+      navItems.forEach(item => {
+        item.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          navLinks.classList.remove('active');
+        });
+      });
+    }
 
     // Privacy Consent Banner Logic
     document.addEventListener("DOMContentLoaded", function () {
