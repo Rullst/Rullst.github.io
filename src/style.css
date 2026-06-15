@@ -176,6 +176,25 @@ body {
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.2);
 }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-light);
+  backdrop-filter: blur(10px);
+}
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.nav-discord {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.nav-discord:hover {
+  background: rgba(255,255,255,0.05);
+}
 
 .badges {
   display: flex;
@@ -245,8 +264,10 @@ body {
 }
 
 /* Terminal & Code */
-.code-showcase, .cli-demo-section {
+.code-showcase, .cli-demo-section, .benchmarks {
   padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .code-container {
   max-width: 800px;
@@ -415,6 +436,9 @@ body {
   }
   .nav-links a {
     text-align: center;
+    padding: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
   }
   .nav-links::-webkit-scrollbar {
     display: none;
