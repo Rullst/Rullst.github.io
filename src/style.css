@@ -404,7 +404,7 @@ body {
     display: flex;
   }
   .navbar {
-    padding: 1rem;
+    padding: 1rem 1.5rem;
   }
   .nav-content {
     flex-direction: row;
