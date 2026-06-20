@@ -25,6 +25,8 @@ This repository contains the source code for the **Official Rullst Landing Page*
 
 ## ✨ Highlighted Features
 
+- **🛡️ Enterprise-Grade Security Matrix:** "Secure by Design" with native integrations for OWASP ZAP DAST scanning, OSSF Scorecards, cargo-fuzz, cargo-mutants, and built-in WAF/Timing/CSRF mitigations.
+- **⚡ Auto-Migrations in Dev Server:** Unmatched Developer Experience (DX). `cargo rullst dev` silently applies database migrations before hot-reloading.
 - **🤖 AI-Native by Design:** Built from the ground up for AI coders. Zero runtime magic, pure compilation, and automatic `.ai-rules` context injection makes Rullst perfectly legible to Cursor and Copilot.
 - **🔄 Autonomous Upgrades:** Never fear breaking changes again. `cargo rullst upgrade` performs AST-based codemods in the background to automatically update your syntax when the framework evolves.
 - **🌍 Edge Fusion & Replication:** Compile to WebAssembly for Cloudflare Workers globally, backed by built-in Turso/libsql replication for 1ms database read latency worldwide.
