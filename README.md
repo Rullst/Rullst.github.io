@@ -1,62 +1,25 @@
-<div align="center">
-  <img src="https://raw.githubusercontent.com/venelouis/Rullst/main/Rullst.png" alt="Rullst Logo" width="120" height="120" />
-  <h1>📜🦀🌐 Rullst Web Framework</h1>
-  <p><strong>Rust for those who want to build, not suffer.</strong></p>
+# Rullst website
 
-  <p>
-    <a href="https://img.shields.io/crates/v/rullst?style=for-the-badge&color=10b981&logo=rust"><img src="https://img.shields.io/crates/v/rullst?style=for-the-badge&color=10b981&logo=rust" alt="Crates.io"></a>
-    <a href="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License: MIT"></a>
-  </p>
+Source for [rullst.github.io](https://rullst.github.io/).
 
-  <p>
-    <a href="https://rullst.github.io">Visit Official Website</a> •
-    <a href="https://github.com/venelouis/Rullst">Framework Repository</a> •
-    <a href="https://discord.gg/2ntKFtsSjw">Discord</a>
-  </p>
-</div>
+This static website describes the unreleased v12 preview honestly: main is active v12 work; v5 is frozen and end-of-life. It makes no universal performance, security or legal-compliance guarantee.
 
-<hr />
+## Source of truth
 
-## 🌟 What is Rullst?
+The design and copy are maintained in the [framework repository](https://github.com/Rullst/Rullst): docs/home_template.html, docs/site.css and docs/site.js. The website privacy page is generated from that same landing notice.
 
-**Rullst** is the developer-first full-stack web framework designed obsessively for emotional productivity. Ditch the boilerplate and ship your startup today.
-
-This repository contains the source code for the **Official Rullst Landing Page**, hosted via GitHub Pages.
-
-## ✨ Highlighted Features
-
-- **🛡️ Enterprise-Grade Security Matrix:** "Secure by Design" with native integrations for OWASP ZAP DAST scanning, OSSF Scorecards, cargo-fuzz, cargo-mutants, and built-in WAF/Timing/CSRF mitigations.
-- **⚡ Auto-Migrations in Dev Server:** Unmatched Developer Experience (DX). `cargo rullst dev` silently applies database migrations before hot-reloading.
-- **🤖 AI-Native by Design:** Built from the ground up for AI coders. Zero runtime magic, pure compilation, and automatic `.ai-rules` context injection makes Rullst perfectly legible to Cursor and Copilot.
-- **🔄 Autonomous Upgrades:** Never fear breaking changes again. `cargo rullst upgrade` performs AST-based codemods in the background to automatically update your syntax when the framework evolves.
-- **🌍 Edge Fusion & Replication:** Compile to WebAssembly for Cloudflare Workers globally, backed by built-in Turso/libsql replication for 1ms database read latency worldwide.
-- **📱 Omni-Frontend Wasm:** Write frontend interactive components strictly in Rust (`#[client_component]`). They compile to lightweight Wasm, eliminating the need to write JavaScript for SPAs or Desktop apps.
-
-## 🚀 How to Install Rullst
+After preserving all local changes, run from the framework checkout:
 
 ```bash
-cargo install cargo-rullst
+node .github/export-organization-site.mjs /path/to/clean/Rullst.github.io
 ```
 
-## 🛠️ About This Repository (Landing Page)
+Review the resulting diff, test it, then commit and deploy separately. The exporter never pushes. Publish matching framework documentation first: /Rullst/book/, /Rullst/images/ and /Rullst/Rullst.png are served by the framework Pages deployment.
 
-This is a fast, performance and design-oriented static site using purely HTML and Vanilla CSS to guarantee instant loading times.
+## Verification
 
-### Project Structure
+The framework's static validator and real Chromium smoke checks exercise the source landing page at desktop and mobile widths, keyboard navigation, clipboard success/denial, privacy details, reduced motion and no-JavaScript navigation. The landing page has no analytics, social embeds or browser storage; linked documentation/benchmarks and GitHub hosting have separate boundaries described in the notice.
 
-- `index.html`: The main structure and design of the landing page.
-- `src/style.css`: All styling, modern typography, and animations (Glassmorphism, Blob Animations).
+## Contributing
 
-## 🤝 Contributing
-
-Feel free to open Issues and Pull Requests in this repository if you want to improve the site, add new sections, or fix any bugs!
-
-1. Fork the project
-2. Create a Feature Branch (`git checkout -b feature/MyFeature`)
-3. Commit your changes (`git commit -m 'feat: Add some awesome feature'`)
-4. Push to the branch (`git push origin feature/MyFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see the tag above for details.
+Prefer a focused change to the framework source followed by this export, so the two entry points stay aligned. Use conventional commits, for example: feat(site): improve navigation. No npm bundle is required.
