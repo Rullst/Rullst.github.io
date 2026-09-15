@@ -2,7 +2,7 @@
 
 Source for [rullst.github.io](https://rullst.github.io/).
 
-This static website describes the unreleased v12 preview honestly: main is active v12 work; v5 is frozen and end-of-life. It makes no universal performance, security or legal-compliance guarantee.
+This static website describes stable Rullst v12 honestly: use exact release artifacts; main remains a moving integration line and v5 is frozen and end-of-life. It makes no universal performance, security or legal-compliance guarantee.
 
 ## Source of truth
 
