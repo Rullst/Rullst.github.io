@@ -141,10 +141,13 @@ h1 { margin: 0; font-size: clamp(3rem, 4.5vw, 4rem); line-height: 1.08; font-wei
 .examples-section { --line: #27342b; --text: #eff5ed; --muted: #a4b4a7; --green: #b2ee80; --orange: #ffa463; --blue: #91c6ef; position: relative; color: var(--text); }
 .examples-section .button-secondary { background: #111813; color: #d5dfd5; }
 .examples-section .button-secondary:hover { border-color: #66866c; background: #172219; }
-.demo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
+.demo-startup-note { margin: 0 0 1.5rem; padding: 1rem 1.2rem; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); font-size: 0.8rem; }
+.demo-startup-note strong { color: var(--text); }
+.demo-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.2rem; }
 .demo-card { --demo-accent: var(--green); --demo-tint: #88ce6033; position: relative; display: flex; flex-direction: column; min-width: 0; border: 1px solid #3d503a; border-radius: 16px; background: linear-gradient(155deg, #172019, #0c130f); overflow: hidden; transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease; }
 .demo-lms { --demo-accent: var(--blue); --demo-tint: #508bdc33; border-color: #334a61; background: linear-gradient(155deg, #16212d, #0d1319); }
 .demo-portfolio { --demo-accent: var(--orange); --demo-tint: #e9924333; border-color: #5c4431; background: linear-gradient(155deg, #261d17, #17120f); }
+.demo-saas { --demo-accent: #c7b0ff; --demo-tint: #9d79e833; border-color: #4a3e66; background: linear-gradient(155deg, #211b30, #14101d); }
 .demo-art { position: relative; display: grid; justify-items: center; place-content: center; gap: 1rem; min-height: 215px; overflow: hidden; border-bottom: 1px solid var(--line); color: var(--demo-accent); background: radial-gradient(ellipse at 50% 100%, var(--demo-tint), transparent 80%); }
 .demo-art::before { content: ""; position: absolute; inset: 0; background: linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px); background-size: 25px 25px; mask-image: linear-gradient(transparent, black); }
 .demo-art svg { position: relative; width: 180px; max-width: 80%; height: 108px; filter: drop-shadow(0 0 14px var(--demo-tint)); transition: transform 300ms ease; }
@@ -239,6 +242,14 @@ h1 { margin: 0; font-size: clamp(3rem, 4.5vw, 4rem); line-height: 1.08; font-wei
 .privacy-notice p { max-width: 950px; margin: 0.5rem 0 0.8rem; font-size: 0.73rem; }
 .privacy-notice summary { width: fit-content; padding: 0.5rem 0; color: var(--green); font-size: 0.75rem; }
 .privacy-notice details > div { padding: 0.5rem 0 0.2rem; }
+.privacy-page { max-width: 950px; }
+.privacy-page > p, .privacy-page section { color: var(--muted); font-size: 0.95rem; }
+.privacy-page .privacy-updated { margin-block: 1.5rem; font-size: 0.8rem; }
+.privacy-page section { margin-top: 2.5rem; }
+.privacy-page h2 { margin-bottom: 0.8rem; color: var(--text); font-size: 1.3rem; line-height: 1.4; }
+.privacy-page strong { color: var(--text); }
+.privacy-page li { margin-block: 0.8rem; }
+.privacy-page a { overflow-wrap: anywhere; }
 .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.4rem; color: #a2b09d; font: 0.66rem var(--mono); }
 .footer-bottom a { color: #c4d8b6; text-decoration: none; }
 
@@ -287,6 +298,7 @@ h1 { margin: 0; font-size: clamp(3rem, 4.5vw, 4rem); line-height: 1.08; font-wei
   .js .examples-section.is-visible .demo-card { animation: card-arrive 700ms ease-out backwards; }
   .js .examples-section.is-visible .demo-card:nth-child(2) { animation-delay: 120ms; }
   .js .examples-section.is-visible .demo-card:nth-child(3) { animation-delay: 240ms; }
+  .js .examples-section.is-visible .demo-card:nth-child(4) { animation-delay: 360ms; }
   .js .examples-section.is-visible .demo-art svg { animation: art-arrive 1.1s ease-out; }
 }
 @media (hover: hover) and (pointer: fine) {
@@ -303,6 +315,7 @@ h1 { margin: 0; font-size: clamp(3rem, 4.5vw, 4rem); line-height: 1.08; font-wei
   .shell { width: calc(100% - 3rem); }
   .nav-links { gap: 1rem; }
   .nav-links a { font-size: 0.76rem; }
+  .demo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .demo-content { padding: 1.3rem; }
   h1 { font-size: clamp(3.3rem, 5.5vw, 4.4rem); }
   .tree-note { display: none; }
