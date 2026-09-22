@@ -85,6 +85,56 @@ if (introButton) {
   playIntro();
 }
 
+// Greet once when the Academy comes into view. Further waves are requested
+// explicitly; motion stays bounded and never overrides the OS preference.
+const academy = document.querySelector("#academy");
+const academyWaveButton = document.querySelector("[data-academy-wave]");
+if (academy && academyWaveButton) {
+  let academyWaveTimer;
+  const stopAcademyWave = () => {
+    clearTimeout(academyWaveTimer);
+    academy.classList.remove("academy-is-waving");
+    academyWaveButton.textContent = "Say hello ↗";
+    academyWaveButton.setAttribute("aria-pressed", "false");
+  };
+  const playAcademyWave = () => {
+    if (motionPreference.matches || document.hidden || academy.classList.contains("academy-is-waving")) return;
+    academy.classList.add("academy-is-waving");
+    academyWaveButton.textContent = "Stop waving";
+    academyWaveButton.setAttribute("aria-pressed", "true");
+    academyWaveTimer = setTimeout(stopAcademyWave, 4400);
+  };
+  academyWaveButton.hidden = motionPreference.matches;
+  academyWaveButton.addEventListener("click", () => {
+    if (academy.classList.contains("academy-is-waving")) stopAcademyWave();
+    else playAcademyWave();
+  });
+  motionPreference.addEventListener("change", () => {
+    academyWaveButton.hidden = motionPreference.matches;
+    stopAcademyWave();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopAcademyWave();
+  });
+  window.addEventListener("pagehide", stopAcademyWave);
+  if ("IntersectionObserver" in window) {
+    let academyGreeted = false;
+    const academyObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          stopAcademyWave();
+        } else if (!academyGreeted) {
+          academyGreeted = true;
+          playAcademyWave();
+        }
+      });
+    }, { threshold: 0.25 });
+    // Observe the mascot itself so the greeting is still visible on tall
+    // mobile layouts, where the copy reaches the viewport first.
+    academyObserver.observe(academy.querySelector(".academy-companion"));
+  }
+}
+
 if (reducedMotion || !("IntersectionObserver" in window)) {
   revealAll();
 } else {

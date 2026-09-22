@@ -37,4 +37,8 @@ Keep the footer summary and privacy.html aligned. Port these changes to docs/hom
 
 ## Contributing
 
+The organization landing page also features [Rullst Academy](https://academy.rullst.win/), the free technology school, separately from the LMS demo. Its inline robot crab SVG is adapted from the Academy homepage. The mascot greets once on entering view, with an optional replay/stop button; it stops offscreen or on tab exit and respects reduced motion. Without JavaScript, the illustration and Academy links remain available. No external assets or connections are needed for the spotlight.
+
+Before the next framework export, port the Academy markup, styles and behavior from `index.html`, `src/style.css` and `src/main.js` to `docs/home_template.html`, `docs/site.css` and `docs/site.js`, along with the linked-service notice update. Otherwise, the exporter will overwrite this addition.
+
 Prefer a focused change to the framework source followed by this export, so the two entry points stay aligned. Use conventional commits, for example: feat(site): improve navigation. No npm bundle is required.
