@@ -65,7 +65,7 @@ jobs:
         run: |
           args=(--out public_site)
           if [ -s benchmarks.json ] && python3 rullst/.github/assemble-organization-site.py --help | grep -q -- --benchmarks; then
-            args+=(--benchmarks benchmarks.json)
+            args+=(--benchmarks)  # reads ./benchmarks.json
           fi
           python3 rullst/.github/assemble-organization-site.py "${args[@]}" 2> assemble.log || { cat assemble.log; exit 1; }
           if [ -s assemble.log ]; then
