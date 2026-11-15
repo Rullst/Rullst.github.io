@@ -21,6 +21,10 @@ concurrency:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  # Latest results published by Rullst/Benchmarks; the comparison page renders
+  # its Rullst, Loco and Topcoat rows at build time (the page itself makes no
+  # request). Missing or invalid data keeps the "measurement in progress" text.
+  BENCHMARKS_URL: https://rullst.win/Benchmarks/data/latest.json
 
 jobs:
   build:
@@ -47,8 +51,27 @@ jobs:
             /docs/site.js
             /docs/flags/
 
-      - name: Assemble index.html, privacy.html, pt-br/ and assets/
-        run: python3 rullst/.github/assemble-organization-site.py --out public_site
+      - name: Download the latest benchmark results
+        run: |
+          if curl --fail --silent --show-error --location --proto '=https' --max-time 30 \
+            --max-filesize 1048576 --output benchmarks.json "$BENCHMARKS_URL"; then
+            echo "Benchmark results: $BENCHMARKS_URL" >> "$GITHUB_STEP_SUMMARY"
+          else
+            rm -f benchmarks.json
+            echo "Benchmark results not available; the comparison page shows that the measurement is in progress." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Assemble the pages and assets
+        run: |
+          args=(--out public_site)
+          if [ -s benchmarks.json ] && python3 rullst/.github/assemble-organization-site.py --help | grep -q -- --benchmarks; then
+            args+=(--benchmarks benchmarks.json)
+          fi
+          python3 rullst/.github/assemble-organization-site.py "${args[@]}" 2> assemble.log || { cat assemble.log; exit 1; }
+          if [ -s assemble.log ]; then
+            cat assemble.log
+            { echo; echo '```'; cat assemble.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Record the source commit
         run: |
