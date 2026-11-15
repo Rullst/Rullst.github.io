@@ -1,28 +1,24 @@
 # Rullst website
 
-Source for [rullst.github.io](https://rullst.github.io/).
+Deployment for [rullst.win](https://rullst.win/): the Rullst landing page in English (`/`) and Brazilian Portuguese (`/pt-br/`), with the full privacy notice (`/privacy.html`, `/pt-br/privacy.html`).
 
-This static website describes Rullst v13 honestly: use exact release artifacts; main remains a moving integration line and v12 is frozen and end-of-life. It makes no universal performance, security or legal-compliance guarantee.
+The website describes Rullst v13, currently in prerelease, honestly: install exact release artifacts; main remains a moving integration line, and v12 (end of life on 16 October 2026) and v5 are frozen. It makes no universal performance, security or legal-compliance guarantee.
 
 ## Source of truth
 
-The design and copy are maintained in the [framework repository](https://github.com/Rullst/Rullst): docs/home_template.html, docs/site.css and docs/site.js. The website privacy page is generated from that same landing notice.
+The pages are maintained in the [framework repository](https://github.com/Rullst/Rullst), under `docs/`: `home_template.html`, `home_template.pt-BR.html`, `privacy_template.html`, `privacy_template.pt-BR.html`, `site.css`, `site.js` and `flags/`. Change them there, in one pull request for both languages; the framework's `validate-site.py` and Chromium smoke test check them before merge. See [website maintenance](https://rullst.win/Rullst/book/website-maintenance.html).
 
-After preserving all local changes, run from the framework checkout:
+## Deployment
 
-```bash
-node .github/export-organization-site.mjs /path/to/clean/Rullst.github.io
-```
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs daily, on every push to `main` here and on demand (Actions → Deploy rullst.win → Run workflow). It checks out the framework's public `main` branch read-only, with no secret, runs `python3 .github/assemble-organization-site.py --out public_site` from it and deploys the result with `actions/deploy-pages`. The job summary records the framework commit. A framework change reaches the site at the next daily run; run the workflow by hand to publish it sooner.
 
-Review the resulting diff, test it, then commit and deploy separately. The exporter never pushes. Publish matching framework documentation first: /Rullst/book/, /Rullst/images/ and /Rullst/Rullst.png are served by the framework Pages deployment.
+The Pages source of this repository is "GitHub Actions", with the custom domain `rullst.win` and HTTPS enforced. Other paths come from other repositories: `/Rullst/` (book, benchmark dashboards, images; `/Rullst/` itself redirects to the root) from [Rullst/Rullst](https://github.com/Rullst/Rullst), and `/Benchmarks/` from [Rullst/Benchmarks](https://github.com/Rullst/Benchmarks).
 
-## Verification
-
-The framework's static validator and real Chromium smoke checks exercise the source landing page at desktop and mobile widths, keyboard navigation, clipboard success/denial, privacy details, reduced motion and no-JavaScript navigation. The landing page has no analytics, social embeds or browser storage; linked documentation/benchmarks and GitHub hosting have separate boundaries described in the notice.
+`index.html`, `privacy.html` and `src/` in this repository are the pages that the branch-based Pages source served before this workflow, kept unchanged as the rollback copy: switching the Pages source back to "Deploy from a branch" (`main`, `/`) restores them. They are not deployed and are not maintained; remove them once the workflow has run reliably.
 
 ## Website privacy maintenance
 
-The landing page links to [the full privacy notice](privacy.html). Its responsible person is Venelouis, Brazil, with officialrullst@gmail.com as the privacy contact. The notice covers these static pages and their email contact channel; the demos, framework documentation and applications need their own data-flow reviews.
+The landing page links to the full privacy notice ([English](https://rullst.win/privacy.html), [português](https://rullst.win/pt-br/privacy.html)). Its responsible person is Venelouis, Brazil, with officialrullst@gmail.com as the privacy contact. The notice covers these static pages and their email contact channel; the demos, framework documentation and applications need their own data-flow reviews.
 
 The notice includes conditional regional information for LGPD, EU/UK GDPR, California CCPA/CPRA, Canada, Switzerland, Australia and Singapore. A published notice is only part of compliance. The operator must maintain the practices it describes, handle rights requests within applicable deadlines and assess territorial scope and exemptions with qualified advice when needed.
 
@@ -31,14 +27,11 @@ Operational items that cannot be verified from this repository:
 - Confirm that the public controller identity is sufficient and whether a DPO or local representative is required by an applicable regime; the contact address alone does not establish an appointment.
 - Verify GitHub/Gmail account arrangements, actual processing locations and any required international-transfer mechanism or contracts. Provider policies do not establish that the site's own transfer obligations have been met.
 - Apply and document correspondence retention/deletion criteria, access controls, request verification and handling, and incident response. The static site cannot enforce mailbox or provider-log retention.
+- rullst.win answers through Cloudflare (`server: cloudflare`, a Network Error Logging `report-to` header and an injected challenge script, which the pages' CSP blocks), while the notice names GitHub Pages as the only host. Review whether the notice should name Cloudflare and which of its features are enabled.
 - Review linked demos separately before collecting account or other personal data. Reassess notices and consent before adding analytics, embeds, advertising or optional storage here.
 
-Keep the footer summary and privacy.html aligned. Port these changes to docs/home_template.html, docs/site.css and the privacy export in the framework repository before running its exporter again, or the next export may overwrite them.
+Keep the landing summary and the full notice aligned, in both languages, in the framework repository (`docs/home_template*.html`, `docs/privacy_template*.html`); this repository no longer holds a copy.
 
 ## Contributing
 
-The organization landing page also features [Rullst Academy](https://academy.rullst.win/), the free technology school, separately from the LMS demo. Its inline robot crab SVG is adapted from the Academy homepage. The mascot greets once on entering view, with an optional replay/stop button; it stops offscreen or on tab exit and respects reduced motion. Without JavaScript, the illustration and Academy links remain available. No external assets or connections are needed for the spotlight.
-
-Before the next framework export, port the Academy markup, styles and behavior from `index.html`, `src/style.css` and `src/main.js` to `docs/home_template.html`, `docs/site.css` and `docs/site.js`, along with the linked-service notice update. Otherwise, the exporter will overwrite this addition.
-
-Prefer a focused change to the framework source followed by this export, so the two entry points stay aligned. Use conventional commits, for example: feat(site): improve navigation. No npm bundle is required.
+Site changes belong in the framework repository. Changes here are limited to the deployment workflow and this README. Use conventional commits, for example: ci(site): pin the deploy action.

@@ -1,0 +1,80 @@
+name: Deploy rullst.win
+
+# The landing and privacy pages (English at /, Brazilian Portuguese at /pt-br/)
+# are maintained in Rullst/Rullst under docs/. This workflow assembles them from
+# that repository's public main branch and deploys them; this repository keeps
+# no copy. /Rullst/ (book, benchmark dashboards) and /Benchmarks/ are deployed
+# by their own repositories.
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    name: Assemble the site from Rullst/Rullst main
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the framework source (public, read-only)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Rullst/Rullst
+          ref: main
+          path: rullst
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          # Every page template (docs/*.html), the shared assets and the
+          # assembler; new pages need no change here.
+          sparse-checkout: |
+            /.github/assemble-organization-site.py
+            /docs/*.html
+            /docs/site.css
+            /docs/site.js
+            /docs/flags/
+
+      - name: Assemble index.html, privacy.html, pt-br/ and assets/
+        run: python3 rullst/.github/assemble-organization-site.py --out public_site
+
+      - name: Record the source commit
+        run: |
+          {
+            echo "Assembled from Rullst/Rullst@$(git -C rullst rev-parse HEAD):"
+            echo
+            (cd public_site && find . -type f | sort | sed 's/^/- /')
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: ./public_site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
