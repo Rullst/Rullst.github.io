@@ -24,7 +24,10 @@ env:
   # Latest results published by Rullst/Benchmarks; the comparison page renders
   # its Rullst, Loco and Topcoat rows at build time (the page itself makes no
   # request). Missing or invalid data keeps the "measurement in progress" text.
-  BENCHMARKS_URL: https://rullst.win/Benchmarks/data/latest.json
+  # The committed copy is read from GitHub: Cloudflare in front of rullst.win
+  # answers runner requests with 403, so rullst.win/Benchmarks/data/latest.json
+  # (the same file) cannot be fetched from Actions.
+  BENCHMARKS_URL: https://raw.githubusercontent.com/Rullst/Benchmarks/main/results/latest.json
 
 jobs:
   build:
@@ -58,6 +61,7 @@ jobs:
             echo "Benchmark results: $BENCHMARKS_URL" >> "$GITHUB_STEP_SUMMARY"
           else
             rm -f benchmarks.json
+            echo "::warning title=Benchmark results not downloaded::$BENCHMARKS_URL could not be fetched; the comparison page keeps the in-progress text."
             echo "Benchmark results not available; the comparison page shows that the measurement is in progress." >> "$GITHUB_STEP_SUMMARY"
           fi
 
