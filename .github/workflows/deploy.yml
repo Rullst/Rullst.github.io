@@ -38,12 +38,11 @@ jobs:
           path: rullst
           persist-credentials: false
           sparse-checkout-cone-mode: false
+          # Every page template (docs/*.html), the shared assets and the
+          # assembler; new pages need no change here.
           sparse-checkout: |
             /.github/assemble-organization-site.py
-            /docs/home_template.html
-            /docs/home_template.pt-BR.html
-            /docs/privacy_template.html
-            /docs/privacy_template.pt-BR.html
+            /docs/*.html
             /docs/site.css
             /docs/site.js
             /docs/flags/
