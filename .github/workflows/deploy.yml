@@ -21,13 +21,18 @@ concurrency:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-  # Latest results published by Rullst/Benchmarks; the comparison page renders
-  # its Rullst, Loco and Topcoat rows at build time (the page itself makes no
-  # request). Missing or invalid data keeps the "measurement in progress" text.
+  # The compact summary Rullst/Benchmarks publishes with every set of results
+  # (schema rullst.benchmarks.site.v2); the comparison page renders its scores,
+  # positions, flags, memory and Rullst reading at build time (the page itself
+  # makes no request). results/latest.json is no longer read: it outgrew the
+  # 1 MiB limit with the v3 results. Missing, invalid or unknown data keeps the
+  # "no current results" text instead of older numbers.
   # The committed copy is read from GitHub: Cloudflare in front of rullst.win
-  # answers runner requests with 403, so rullst.win/Benchmarks/data/latest.json
+  # answers runner requests with 403, so rullst.win/Benchmarks/data/site.json
   # (the same file) cannot be fetched from Actions.
-  BENCHMARKS_URL: https://raw.githubusercontent.com/Rullst/Benchmarks/main/results/latest.json
+  BENCHMARKS_URL: https://raw.githubusercontent.com/Rullst/Benchmarks/main/results/site.json
+  # Results measured longer ago than this many days are not shown.
+  BENCHMARKS_MAX_AGE_DAYS: "90"
 
 jobs:
   build:
@@ -54,7 +59,7 @@ jobs:
             /docs/site.js
             /docs/flags/
 
-      - name: Download the latest benchmark results
+      - name: Download the latest benchmark summary
         run: |
           if curl --fail --silent --show-error --location --proto '=https' --max-time 30 \
             --max-filesize 1048576 --output benchmarks.json "$BENCHMARKS_URL"; then
@@ -68,8 +73,12 @@ jobs:
       - name: Assemble the pages and assets
         run: |
           args=(--out public_site)
-          if [ -s benchmarks.json ] && python3 rullst/.github/assemble-organization-site.py --help | grep -q -- --benchmarks; then
+          help="$(python3 rullst/.github/assemble-organization-site.py --help)"
+          if [ -s benchmarks.json ] && grep -q -- --benchmarks <<< "$help"; then
             args+=(--benchmarks)  # reads ./benchmarks.json
+            if grep -q -- --benchmarks-max-age-days <<< "$help"; then
+              args+=(--benchmarks-max-age-days "$BENCHMARKS_MAX_AGE_DAYS")
+            fi
           fi
           python3 rullst/.github/assemble-organization-site.py "${args[@]}" 2> assemble.log || { cat assemble.log; exit 1; }
           if [ -s assemble.log ]; then
