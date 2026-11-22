@@ -1,10 +1,11 @@
 name: Deploy rullst.win
 
-# The landing and privacy pages (English at /, Brazilian Portuguese at /pt-br/)
-# are maintained in Rullst/Rullst under docs/. This workflow assembles them from
-# that repository's public main branch and deploys them; this repository keeps
-# no copy. /Rullst/ (book, benchmark dashboards) and /Benchmarks/ are deployed
-# by their own repositories.
+# The landing, privacy and comparison pages (English at /, Brazilian
+# Portuguese at /pt-br/) are written by the site generator of Rullst/Rullst
+# (site/, a Rust program that uses Rullst's own html! macro). This workflow
+# builds it from that repository's public main branch, runs it and deploys the
+# result; this repository keeps no copy. /Rullst/ (book, benchmark dashboards)
+# and /Benchmarks/ are deployed by their own repositories.
 
 on:
   push:
@@ -12,6 +13,11 @@ on:
   schedule:
     - cron: "17 6 * * *"
   workflow_dispatch:
+    inputs:
+      rullst-ref:
+        description: "Rullst/Rullst branch or commit to generate the site from; anything other than main builds the site without deploying it"
+        required: false
+        default: main
 
 permissions: {}
 
@@ -21,43 +27,77 @@ concurrency:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  # The Rullst/Rullst revision the site is generated from.
+  RULLST_REF: ${{ inputs.rullst-ref || 'main' }}
   # The compact summary Rullst/Benchmarks publishes with every set of results
-  # (schema rullst.benchmarks.site.v2); the comparison page renders its scores,
-  # positions, flags, memory and Rullst reading at build time (the page itself
-  # makes no request). results/latest.json is no longer read: it outgrew the
-  # 1 MiB limit with the v3 results. Missing, invalid or unknown data keeps the
-  # "no current results" text instead of older numbers.
+  # (schema rullst.benchmarks.site.v2); the comparison page and the landing
+  # render its scores, positions, flags, memory and Rullst reading at build
+  # time (the pages themselves make no request). Missing, invalid or unknown
+  # data keeps the "no current results" text instead of older numbers.
   # The committed copy is read from GitHub: Cloudflare in front of rullst.win
-  # answers runner requests with 403, so rullst.win/Benchmarks/data/site.json
-  # (the same file) cannot be fetched from Actions.
+  # answers ordinary runner requests with 403.
   BENCHMARKS_URL: https://raw.githubusercontent.com/Rullst/Benchmarks/main/results/site.json
   # Results measured longer ago than this many days are not shown.
   BENCHMARKS_MAX_AGE_DAYS: "90"
+  # The published site whose landing pages cargo rullst footprint weighs.
+  SITE_ORIGIN: https://rullst.win
 
 jobs:
   build:
-    name: Assemble the site from Rullst/Rullst main
+    name: Generate the site from Rullst/Rullst
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25
     permissions:
       contents: read
     steps:
-      - name: Check out the framework source (public, read-only)
+      - name: Check out the site generator (public, read-only)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Rullst/Rullst
-          ref: main
+          ref: ${{ env.RULLST_REF }}
           path: rullst
           persist-credentials: false
           sparse-checkout-cone-mode: false
-          # Every page template (docs/*.html), the shared assets and the
-          # assembler; new pages need no change here.
+          # The generator, the stylesheet, script and flags it embeds, and the
+          # toolchain the framework pins; new pages need no change here.
           sparse-checkout: |
-            /.github/assemble-organization-site.py
-            /docs/*.html
+            /site/
             /docs/site.css
             /docs/site.js
             /docs/flags/
+            /rust-toolchain.toml
+
+      - name: Copy the generator out of the git checkout
+        # Cargo lists a package's files through git when the package is inside
+        # a repository, which fails in this sparse checkout; the copy is a plain
+        # directory with the same layout (site/ next to docs/).
+        run: |
+          echo "RULLST_SHA=$(git -C rullst rev-parse HEAD)" >> "$GITHUB_ENV"
+          mkdir generator
+          cp -R rullst/site rullst/docs rullst/rust-toolchain.toml generator/
+
+      - name: Install the Rust toolchain the framework pins
+        run: |
+          channel="$(sed -n 's/^channel = "\(.*\)"$/\1/p' generator/rust-toolchain.toml)"
+          test -n "$channel"
+          rustup toolchain install "$channel" --profile minimal --no-self-update
+          echo "RUSTUP_TOOLCHAIN=$channel" >> "$GITHUB_ENV"
+
+      - name: Cache the generator's dependencies and build
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            generator/site/target
+          key: rullst-site-${{ runner.os }}-${{ env.RUSTUP_TOOLCHAIN }}-${{ hashFiles('generator/site/Cargo.lock') }}
+          restore-keys: |
+            rullst-site-${{ runner.os }}-${{ env.RUSTUP_TOOLCHAIN }}-
+
+      - name: Build the site generator
+        working-directory: generator/site
+        run: cargo build --locked
 
       - name: Download the latest benchmark summary
         run: |
@@ -66,30 +106,55 @@ jobs:
             echo "Benchmark results: $BENCHMARKS_URL" >> "$GITHUB_STEP_SUMMARY"
           else
             rm -f benchmarks.json
-            echo "::warning title=Benchmark results not downloaded::$BENCHMARKS_URL could not be fetched; the comparison page keeps the in-progress text."
-            echo "Benchmark results not available; the comparison page shows that the measurement is in progress." >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning title=Benchmark results not downloaded::$BENCHMARKS_URL could not be fetched; the pages keep their no-current-results text."
+            echo "Benchmark results not available; the pages say that no current results are available." >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: Assemble the pages and assets
+      - name: Weigh the published landing pages with cargo rullst footprint
+        # The CLI release of the Rullst version the site is made with:
+        # site/cargo-rullst.sha256 names its file and SHA-256. The
+        # reports describe the pages as published before this deployment; the
+        # generator shows a page's weight only when its report passes every
+        # check, and nothing when a measurement fails.
         run: |
-          args=(--out public_site)
-          help="$(python3 rullst/.github/assemble-organization-site.py --help)"
-          if [ -s benchmarks.json ] && grep -q -- --benchmarks <<< "$help"; then
-            args+=(--benchmarks)  # reads ./benchmarks.json
-            if grep -q -- --benchmarks-max-age-days <<< "$help"; then
-              args+=(--benchmarks-max-age-days "$BENCHMARKS_MAX_AGE_DAYS")
-            fi
+          pin=generator/site/cargo-rullst.sha256
+          file="$(awk '{print $2}' "$pin")"
+          version="${file#cargo-rullst-}"
+          version="${version%-x86_64-unknown-linux-gnu}"
+          if ! curl --fail --silent --show-error --location --proto '=https' --max-time 120 \
+            --output "$file" "https://github.com/Rullst/Rullst/releases/download/v$version/$file" ||
+            ! sha256sum --check --strict "$pin"; then
+            echo "::warning title=Page weight not measured::cargo-rullst $version could not be downloaded or did not match $pin."
+            exit 0
           fi
-          python3 rullst/.github/assemble-organization-site.py "${args[@]}" 2> assemble.log || { cat assemble.log; exit 1; }
-          if [ -s assemble.log ]; then
-            cat assemble.log
-            { echo; echo '```'; cat assemble.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          chmod +x "$file"
+          for page in / /pt-br/; do
+            report=footprint.json
+            if [ "$page" != / ]; then report=footprint-pt-br.json; fi
+            if ./"$file" rullst footprint --url "$SITE_ORIGIN" --path "$page" --page-weight --json > "$report"; then
+              echo "Page weight of $SITE_ORIGIN$page measured with cargo-rullst $version." >> "$GITHUB_STEP_SUMMARY"
+            else
+              rm -f "$report"
+              echo "::warning title=Page weight not measured::cargo rullst footprint could not weigh $SITE_ORIGIN$page."
+            fi
+          done
+
+      - name: Generate the pages and assets
+        run: |
+          args=(--out public_site --footprint)
+          if [ -s benchmarks.json ]; then
+            args+=(--benchmarks --benchmarks-max-age-days "$BENCHMARKS_MAX_AGE_DAYS")  # reads ./benchmarks.json
+          fi
+          generator/site/target/debug/rullst-site "${args[@]}" 2> generate.log || { cat generate.log; exit 1; }
+          if [ -s generate.log ]; then
+            cat generate.log
+            { echo; echo '```'; cat generate.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Record the source commit
         run: |
           {
-            echo "Assembled from Rullst/Rullst@$(git -C rullst rev-parse HEAD):"
+            echo "Generated from Rullst/Rullst@$RULLST_SHA ($RULLST_REF):"
             echo
             (cd public_site && find . -type f | sort | sed 's/^/- /')
           } >> "$GITHUB_STEP_SUMMARY"
@@ -102,6 +167,9 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     needs: build
+    # A manual run from another Rullst/Rullst revision or another branch of
+    # this repository is a preview: it builds the site and does not deploy it.
+    if: github.ref == 'refs/heads/main' && (github.event_name != 'workflow_dispatch' || inputs.rullst-ref == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
