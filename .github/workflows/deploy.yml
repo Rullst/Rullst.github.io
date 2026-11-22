@@ -67,9 +67,18 @@ jobs:
             /docs/flags/
             /rust-toolchain.toml
 
+      - name: Copy the generator out of the git checkout
+        # Cargo lists a package's files through git when the package is inside
+        # a repository, which fails in this sparse checkout; the copy is a plain
+        # directory with the same layout (site/ next to docs/).
+        run: |
+          echo "RULLST_SHA=$(git -C rullst rev-parse HEAD)" >> "$GITHUB_ENV"
+          mkdir generator
+          cp -R rullst/site rullst/docs rullst/rust-toolchain.toml generator/
+
       - name: Install the Rust toolchain the framework pins
         run: |
-          channel="$(sed -n 's/^channel = "\(.*\)"$/\1/p' rullst/rust-toolchain.toml)"
+          channel="$(sed -n 's/^channel = "\(.*\)"$/\1/p' generator/rust-toolchain.toml)"
           test -n "$channel"
           rustup toolchain install "$channel" --profile minimal --no-self-update
           echo "RUSTUP_TOOLCHAIN=$channel" >> "$GITHUB_ENV"
@@ -81,13 +90,13 @@ jobs:
             ~/.cargo/registry/index
             ~/.cargo/registry/cache
             ~/.cargo/git/db
-            rullst/site/target
-          key: rullst-site-${{ runner.os }}-${{ env.RUSTUP_TOOLCHAIN }}-${{ hashFiles('rullst/site/Cargo.lock') }}
+            generator/site/target
+          key: rullst-site-${{ runner.os }}-${{ env.RUSTUP_TOOLCHAIN }}-${{ hashFiles('generator/site/Cargo.lock') }}
           restore-keys: |
             rullst-site-${{ runner.os }}-${{ env.RUSTUP_TOOLCHAIN }}-
 
       - name: Build the site generator
-        working-directory: rullst/site
+        working-directory: generator/site
         run: cargo build --locked
 
       - name: Download the latest benchmark summary
@@ -103,12 +112,12 @@ jobs:
 
       - name: Weigh the published landing pages with cargo rullst footprint
         # The CLI release of the Rullst version the site is made with:
-        # rullst/site/cargo-rullst.sha256 names its file and SHA-256. The
+        # site/cargo-rullst.sha256 names its file and SHA-256. The
         # reports describe the pages as published before this deployment; the
         # generator shows a page's weight only when its report passes every
         # check, and nothing when a measurement fails.
         run: |
-          pin=rullst/site/cargo-rullst.sha256
+          pin=generator/site/cargo-rullst.sha256
           file="$(awk '{print $2}' "$pin")"
           version="${file#cargo-rullst-}"
           version="${version%-x86_64-unknown-linux-gnu}"
@@ -136,7 +145,7 @@ jobs:
           if [ -s benchmarks.json ]; then
             args+=(--benchmarks --benchmarks-max-age-days "$BENCHMARKS_MAX_AGE_DAYS")  # reads ./benchmarks.json
           fi
-          rullst/site/target/debug/rullst-site "${args[@]}" 2> generate.log || { cat generate.log; exit 1; }
+          generator/site/target/debug/rullst-site "${args[@]}" 2> generate.log || { cat generate.log; exit 1; }
           if [ -s generate.log ]; then
             cat generate.log
             { echo; echo '```'; cat generate.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
@@ -145,7 +154,7 @@ jobs:
       - name: Record the source commit
         run: |
           {
-            echo "Generated from Rullst/Rullst@$(git -C rullst rev-parse HEAD) ($RULLST_REF):"
+            echo "Generated from Rullst/Rullst@$RULLST_SHA ($RULLST_REF):"
             echo
             (cd public_site && find . -type f | sort | sed 's/^/- /')
           } >> "$GITHUB_STEP_SUMMARY"
